@@ -114,10 +114,10 @@ class Blockchain {
     submitStar(address, message, signature, star) {
         let self = this;
         return new Promise(async (resolve, reject) => {
-            let msgTimeStemp=parseInt(message.split(":")[1])
+            let msgTimeStamp=parseInt(message.split(":")[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3));
             if(currentTime-msgTimestamp>300){
-                reject("time diff is greeater than 5 minutes")
+                reject("time difference is greeater than 5 minutes")
             }
             if(bitcoinMessage.verify(message,address,signature)==false){
                 reject('Signature verification failed');
@@ -138,7 +138,7 @@ class Blockchain {
     getBlockByHash(hash) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let block=self.chain.filter(p=>p.height==height)[0];
+            let block=self.chain.filter(p=>p.hash==hash)[0];
             if(block){
                 resolve(block);
             }
@@ -198,16 +198,16 @@ class Blockchain {
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
             self.chain.forEach(asyn function(block,height){
-                let previousBlockHash=null;
+                let previous_BlockHash=null;
                 if(height>0){
-                    previousBlockHash=self.chain[height-1].hash;
+                    previous_BlockHash=self.chain[height-1].hash;
                 }
-                if(block.previousBlockHash!=previousBlockHash){
-                    errorLog.push('Invalid previous Block hash');
+                if(block.previous_BlockHash!=previous_BlockHash){
+                    errorLog.push('Invalid previous Block_hash');
                 }
                 await block.validate().then(function(isValid){
                     if(isValid==false){
-                        errorLog.push('Invalid Block');
+                        errorLog.push('Invalid Blockchain');
                     }
                 });
             });

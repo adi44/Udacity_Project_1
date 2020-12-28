@@ -39,10 +39,10 @@ class Block {
         let self = this;
         return new Promise((resolve, reject) => {
             // Save in auxiliary variable the current block hash
-            let previousHash = self.hash;
+            let previous_Hash = self.hash;
             self.hash=null;
             var calculated_hash = SHA256(JSON.stringify(self)).toString();
-            if(previousHash==calculated_hash){
+            if(previous_Hash==calculated_hash){
                 return resolve(true); 
             }
             else{
@@ -71,11 +71,11 @@ class Block {
         let self=this;
         return new promise((resolve,reject) =>{
             if(self.height == 0){
-                reject('there is no info in the Genesis block');
+                reject('there is no information in the Genesis block');
             }
 
-            let decodeBody=JSON.parse(hex2ascii(self.body));
-            resolve(decodeBody);
+            let decodedBody=JSON.parse(hex2ascii(self.body));
+            resolve(decodedBody);
         });
         // Getting the encoded data saved in the Block
         // Decoding the data to retrieve the JSON representation of the object
