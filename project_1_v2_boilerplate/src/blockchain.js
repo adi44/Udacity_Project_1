@@ -81,8 +81,10 @@ class Blockchain {
 
             // Increase block height
             this.height += 1;
-            
-            resolve(block);
+            self.validateChain().then(function(logs){
+            if(logs){
+            resolve(block);}
+            }
         });
     }
 
