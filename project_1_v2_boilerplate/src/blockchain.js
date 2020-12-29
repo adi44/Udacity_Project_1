@@ -63,16 +63,21 @@ class Blockchain {
      */
     _addBlock(block) {
         let self = this;
+        let err="New Chain exist"
         return new Promise(async (resolve, reject) => {
             block.height=self.chain.length;
-            block.time=new Date().getTime().toString().slice(0,3);
+            block.time=new Date().getTime().toString();
+            try{
             if(self.chain.length>0)
             {
                 block.previousBlockHash=self.chain[self.chain.length-1].hash;
             }
             block.hash=SHA256(JSON.stringify(block)).toString();
             self.chain.push(block);
-            resolve(block);
+            resolve(block);}
+            catch(err){
+                console.log(err);
+            }
            
         });
     }
@@ -116,13 +121,13 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             let msgTimeStamp=parseInt(message.split(":")[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3));
-            if(currentTime-msgTimestamp>300){
+            if(currentTime-msgTimeStamp>300){
                 reject("time difference is greeater than 5 minutes")
             }
             if(bitcoinMessage.verify(message,address,signature)==false){
                 reject('Signature verification failed');
             }
-            let newBlock = newBlockClass.Block({owner:address,star:star});
+            let newBlock = new BlockClass.Block({owner:address,star:star});
             await this._addBlock(newBlock);
             resolve(newBlock);
             
@@ -197,7 +202,7 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            self.chain.forEach(asyn function(block,height){
+            self.chain.forEach(async function(block,height){
                 let previous_BlockHash=null;
                 if(height>0){
                     previous_BlockHash=self.chain[height-1].hash;
