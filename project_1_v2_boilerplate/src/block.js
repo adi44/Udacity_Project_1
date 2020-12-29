@@ -75,8 +75,9 @@ class Block {
         let self=this;
         return new Promise((resolve,reject) =>{
             if(self.height == 0){
-                reject('there is no information in the Genesis block');
+                resolve(false);
             }
+		
 
             let decodedBody=JSON.parse(hex2ascii(self.body));
             resolve(decodedBody);
