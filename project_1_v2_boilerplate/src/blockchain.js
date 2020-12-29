@@ -63,24 +63,29 @@ class Blockchain {
      */
     _addBlock(block) {
         let self = this;
-        let err="New Chain exist";
         return new Promise(async (resolve, reject) => {
-            block.height=self.chain.length;
-            block.time=new Date().getTime().toString();
-            try{
-            if(self.chain.length>0)
-            {
-                block.previousBlockHash=self.chain[self.chain.length-1].hash;
+            // Check for Genesis Block
+            if (this.height === -1) {
+                block.previousBlockHash = null;
             }
-            block.hash=SHA256(JSON.stringify(block)).toString();
-            self.chain.push(block);
-            resolve(block);}
-            catch(err){
-                console.log(err);
+            else {
+                block.previousBlockHash = this.chain[this.height].hash;
             }
-           
+            // Create block data
+            block.height = this.height + 1;
+            block.time = new Date().getTime().toString().slice(0,-3); 
+            block.hash = SHA256(JSON.stringify(block)).toString();
+
+            // Add block
+            this.chain.push(block);
+
+            // Increase block height
+            this.height += 1;
+
+            resolve(block);
         });
     }
+
 
     /**
      * The requestMessageOwnershipVerification(address) method
