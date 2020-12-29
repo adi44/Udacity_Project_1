@@ -212,7 +212,7 @@ class Blockchain {
                 if(height>0){
                     previous_BlockHash=self.chain[height-1].hash;
                 }
-                if(block.previous_BlockHash!=previous_BlockHash){
+                if(block.previousBlockHash!=previous_BlockHash){
                     errorLog.push('Invalid previous Block_hash');
                 }
                 await block.validate().then(function(isValid){
