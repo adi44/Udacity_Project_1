@@ -43,10 +43,14 @@ class Block {
             self.hash=null;
             var calculated_hash = SHA256(JSON.stringify(self)).toString();
             if(previous_Hash==calculated_hash){
+		self.hash=previous_Hash
                 return resolve(true); 
+		    
             }
             else{
+		self.hash=previous_Hash;
                 return resolve(false);
+		   
             }
                                             
             // Recalculate the hash of the Block
