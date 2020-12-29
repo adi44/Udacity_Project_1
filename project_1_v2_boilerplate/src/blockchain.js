@@ -207,25 +207,14 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            self.chain.forEach(async function(block,height){
-                let previous_BlockHash=null;
-                if(height>0){
-                    previous_BlockHash=self.chain[height-1].hash;
-                }
-                if(block.previousBlockHash!=previous_BlockHash){
-                    errorLog.push('Invalid previous Block_hash');
-                }
-                await block.validate().then(function(isValid){
-                    if(isValid==false){
-                        errorLog.push('Invalid Blockchain');
-                    }
-                });
-            });
+            // Loop the blockchain
+            for (let i = 1; i <= this.height; i++) { 
+                let block = this.chain[i];
+                    errorLog.push(block.validate());
+            }
             resolve(errorLog);
-            
         });
     }
-
 }
 
 module.exports.Blockchain = Blockchain;   
