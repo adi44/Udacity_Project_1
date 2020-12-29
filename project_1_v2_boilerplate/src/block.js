@@ -73,7 +73,7 @@ class Block {
      */
     getBData() {
         let self=this;
-        return new promise((resolve,reject) =>{
+        return new Promise((resolve,reject) =>{
             if(self.height == 0){
                 reject('there is no information in the Genesis block');
             }
